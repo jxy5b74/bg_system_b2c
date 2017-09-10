@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.mall.mapper.SkuRedisMapper">
+	
+	<select id="select_products_info_by_class_2_id_attr_id_attr_value_id" 
+			parameterType="map"
+			resultMap="select_products_info_by_class_2_id_attr_id_attr_value_id_map">
+	
+		select distinct spu.Id as spu_id ,sku.Id as sku_id,tm.Id as tm_id,
+				spu.*,sku.*,tm.*
+
+		from 
+			t_mall_product spu,
+			t_mall_sku_attr_value sku_av, 
+			t_mall_sku sku,
+			t_mall_trade_mark tm
+			
+		where 
+			spu.pp_id = tm.Id AND
+			spu.Id = sku.shp_id and 
+			sku_av.sku_id = sku.Id AND
+			spu.flbh2 = #{class_2_id} and 
+			sku.Id in(
+				select sku_0.sku_id from 
+				(select sku_id from t_mall_sku_attr_value where shxm_id = #{attr_id} and shxzh_id =#{value_id}) sku_0
+			)
+	
+	</select>
+	
+	<resultMap type="com.atguigu.mall.bean.OBJECT_T_MALL_SKU" 
+			   id="select_products_info_by_class_2_id_attr_id_attr_value_id_map" 
+			   autoMapping="true">
+		<result column="sku_id" property="id"/>
+		<association javaType="com.atguigu.mall.bean.T_Mall_Product" 
+					 property="spu" 
+					 autoMapping="true">
+				<result column="spu_id" property="id"/>
+		</association>
+		<association javaType="com.atguigu.mall.bean.T_MALL_TRADE_MARK" 
+					 property="tm" 
+					 autoMapping="true">
+				<result column="tm_id" property="id"/>
+		</association>
+	</resultMap>
+	
+	
+	
+	<select id="selectProductAttrInfo" parameterType="int" resultMap="selectProductAttrInfo_map">
+	select 
+		attr.Id as attr_id , 
+		val.Id as val_id, 
+		val.shxzh_mch ,
+		attr.*,
+		val.*
+	from 
+		t_mall_attr as attr, 
+		t_mall_value as val
+	where 
+		attr.Id = val.shxm_id
+	and 
+		flbh2= #{flbh2}
+	</select>
+	<!-- 
+		不要修改基类：T_Mall_Attr,
+			如果有需求，比如说想给基类添加一个List类型的成员属性作为封装多个T_Mall_Value的集合，
+			那就再创建一个Object_T_Mall_Attr这个类来继承T_Mall_Attr
+			并在Object_T_Mall_Attr中添加需要的List集合成员属性
+	 -->
+	<resultMap type="com.atguigu.mall.bean.Object_T_Mall_Attr" id="selectProductAttrInfo_map" 
+		autoMapping="true">
+		<result property="Id" column="attr_id"/>
+		<collection property="valueList" ofType="com.atguigu.mall.bean.T_Mall_Value" 
+			autoMapping="true">
+			<result property="Id" column="val_id"/>
+		</collection>
+	</resultMap>
+	
+
+
+	<select id="select_products_info_by_class_2_id" 
+		resultMap="get_product_by_class_2_id_map" >
+		
+		select 
+			sku.id as sku_id, spu.id as spu_id, tm.id as tm_id, sku.*,spu.*,tm.*
+		from 
+			t_mall_sku sku,
+			t_mall_product spu,
+			t_mall_trade_mark tm
+		where
+			sku.shp_id = spu.id 
+		and
+			tm.id = spu.pp_id
+		and 
+			spu.flbh2 = #{class_2_id}	
+		${order_condition}
+	</select>
+	<resultMap type="com.atguigu.mall.bean.OBJECT_T_MALL_SKU" 
+			   id="get_product_by_class_2_id_map" 
+			   autoMapping="true">
+		<result column="sku_id" property="id"/>
+		<association javaType="com.atguigu.mall.bean.T_Mall_Product" 
+					 property="spu" 
+					 autoMapping="true">
+				<result column="spu_id" property="id"/>
+		</association>
+		<association javaType="com.atguigu.mall.bean.T_MALL_TRADE_MARK" 
+					 property="tm" 
+					 autoMapping="true">
+				<result column="tm_id" property="id"/>
+		</association>
+	</resultMap>
+</mapper>

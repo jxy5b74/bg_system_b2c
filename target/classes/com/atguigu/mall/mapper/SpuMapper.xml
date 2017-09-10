@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.mall.mapper.SpuMapper">
+	
+	<insert id="insert_new_product_spu_info" useGeneratedKeys="true" keyProperty="id">
+		insert into t_mall_product (shp_mch,flbh1,flbh2,pp_id,shp_msh,shp_tp)
+		values (#{shp_mch},#{flbh1},#{flbh2},#{pp_id},#{shp_msh},#{shp_tp})
+	</insert>
+	
+	<insert id="insert_product_image_url">
+			insert into t_mall_product_image(shp_id,url)
+			values 
+				<foreach collection="urls" item="img_url" separator=",">
+					(#{spu_id},#{img_url})
+				</foreach>
+	</insert>
+<!-- 这种写法也可以
+		<insert id="insert_product_image_url">
+			<foreach collection="urls" item="img_url" separator=";">
+				insert into t_mall_product_image(shp_id,url)
+				values (#{spu_id},#{img_url})
+			</foreach>
+		</insert> 
+-->
+</mapper>

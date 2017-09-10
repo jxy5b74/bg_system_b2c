@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 约束文件 schema : .xsd DTD : .dtd 编写当前XML文件时,标签使用规则必须遵循DTD约束文档定义的规则 -->
+<configuration>
+	<!-- 获取数据源的工作已被spring管理 -->
+	<!-- 加载外部属性资源文件:不需要设置"classpath:/" -->
+	<!-- <properties resource="jdbc.properties" /> -->
+	
+	<!-- 框架全局设置 --><!-- 三大框架整合时，MyBatis配置文件中仅保留MyBatis全局设置 -->
+	<settings>
+		<setting name="lazyLoadingEnabled" value="true"/><!-- 开启延时加载 -->
+		<setting name="aggressiveLazyLoading" value="false"/><!-- 关闭即时加载 -->
+	</settings>
+	
+	
+	<!-- 使用简单类名 --><!-- 已被spring管理 -->
+<!-- 	<typeAliases>
+		<package name="com.atguigu.ssm.entity"/>
+	</typeAliases> -->
+	
+	
+	<!-- 配置MyBatis框架使用环境 --><!-- 获取数据源的工作已被spring管理 -->
+<!-- 	<environments default="development">
+		配置开发环境
+		<environment id="development">
+			配置管理事务方式
+			<transactionManager type="JDBC" />
+			MyBatis默认集成C3P0,采用连接池获取连接
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driverClass}" />
+				<property name="url" value="${jdbc.jdbcUrl}" />
+				<property name="username" value="${jdbc.user}" />
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+	</environments> -->
+	
+	<!-- 管理映射配置 --><!-- 已被spring管理,在bean.xml文件中配置<bean>:MapperScannerConfigurer -->
+	<!-- <mappers> -->
+<!-- 	<mapper resource="com/atguigu/mybatis/mapper/CustomerMapper.xml"/>
+		<mapper resource="com/atguigu/mybatis/mapper/OrderMapper.xml"/> -->
+<!-- 		<package name="com.atguigu.ssm.mapper"/>
+	</mappers> -->
+	
+	
+</configuration>	

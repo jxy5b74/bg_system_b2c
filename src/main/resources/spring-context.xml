@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+<!-- 配置扫描包 -->
+	<context:component-scan base-package="com.atguigu.mall" use-default-filters="true">
+		<!-- 除了标有@Controller的类都被扫描到 -->
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
+<!-- 加载外部属性资源文件 -->
+	<context:property-placeholder location="classpath:/jdbc.properties"/>
+	<!-- C3P0连接信息 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="user" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+		<property name="jdbcUrl" value="${jdbc.url}"/>
+		<property name="driverClass" value="${jdbc.driverClass}"/>
+		<property name="initialPoolSize" value="${initialPoolSize}"/>
+		<property name="minPoolSize" value="${minPoolSize}"/>
+		<property name="maxPoolSize" value="${maxPoolSize}"/>
+	</bean>
+
+<!-- 将Spring与MyBatis整合jar包中的SqlSessionFactoryBean类交给spring管理 -->
+<!-- SqlSessionFactoryBean是专门用于生成与数据库会话的session对象的类 -->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 数据源交给sqlSessionFactoryBean -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 指定MyBatis配置文件 -->
+		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+		<!-- 设置使用类的别名，这里可以设置，也可以在MyBatis框架配置文件中进行设置 -->
+		<property name="typeAliasesPackage" value="com.atguigu.mall.bean"></property>
+	</bean>
+
+<!-- 设置扫描Mapper -->
+	<!-- 相当于mybatis-config.xml文件中的<Mappers>标签，用来管理映射配置 -->
+	<!-- 帮我们扫描Mapper包，生成Mapper映射代理的一个类 -->
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.atguigu.mall.mapper"/>	
+	</bean>
+	
+
+	
+<!-- 开启声明式事务 -->
+	<!-- 配置数据源事务管理器 -->
+	<!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
+		<!--  事务时基于连接的，所以要把数据源注入给事务	框架就会根据数据源自动去拿连接-->
+		<!-- （即使在ssd模式下的Filter中也要用连接来设置取消事务的自动提交/提交事务/回滚事务） -->
+<!-- 		<property name="dataSource" ref="dataSource"></property>
+	</bean> -->
+		<!-- 采用基于XML的声明式事务 -->
+	<!-- <aop:config> --><!-- *1:方法的权限修饰符。*2:XxxService类名中的Xxx。*3:方法名。..1:省略的包路径。..2:方法的参数个数随意 -->
+		<!-- <aop:pointcut expression="execution(* com.atguigu..service.*Service.*(..))" id="txPointcutId"/>
+		<aop:advisor advice-ref="adviceId" pointcut-ref="txPointcutId"/> -->
+	<!-- </aop:config> -->
+	<!-- 配置通知（根据事务管理器添加事务，所以要引用事务管理器） -->
+	<!-- <tx:advice id="adviceId" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="save*" 
+					   propagation="REQUIRED" 
+					   isolation="DEFAULT"
+					   rollback-for="java.lang.Exception"/>
+			<tx:method name="delete*" 
+					   propagation="REQUIRED" 
+					   isolation="DEFAULT"
+					   rollback-for="java.lang.Exception"/>
+			<tx:method name="update*" 
+					   propagation="REQUIRED" 
+					   isolation="DEFAULT"
+					   rollback-for="java.lang.Exception"/>
+			<tx:method name="query*" read-only="true"/>
+			
+			<tx:method name="get*" read-only="true"/>
+			
+			<tx:method name="*" read-only="true"/>
+		</tx:attributes>
+	</tx:advice> -->
+	
+</beans>
+
+
+

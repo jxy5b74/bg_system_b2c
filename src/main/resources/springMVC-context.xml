@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+
+<!-- 配置扫描包 -->
+<context:component-scan base-package="com.atguigu.mall" use-default-filters="false">
+	<!-- 除了标有@Controller的类都被扫描到 -->
+	<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+</context:component-scan>
+
+<!-- 配置内部资源视图解析器 -->
+<bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+ 	<property name="prefix" value="/WEB-INF/views/"></property>
+ 	<property name="suffix" value=".jsp"></property>
+</bean>
+
+<!-- 直接跳转注册用户页面 -->
+	<!-- <mvc:view-controller path="/addCustomer" view-name="addCustomer"/> -->
+
+<!-- 以下两个配置的作用是启动容器注解 -->
+<!-- 配置默认控制器————解决静态资源无法加载 -->
+	<mvc:default-servlet-handler default-servlet-name="default"/>
+<!-- 静态资源映射资源同时好用 -->
+	<mvc:annotation-driven/>
+<!-- 启用容器注解还有如下一种方式，使用这种方式MVC会有一些默认的功能不能使用。
+		例如REST风格转发参数的时候就不会把参数放进请求request里面
+		context是spring扫描的注解，既然是spring扫描的注解，哪么有一些mvc中的bean的功能就会丢掉 
+		所以启用注解扫描的时候，尽量使用第一种方式-->
+<!-- 	<context:annotation-config></context:annotation-config> -->
+
+
+<!-- 声明国际化资源相关文件 -->		
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="i18n"></property>
+	</bean>
+	<!-- 国际化解析器 -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"></bean>
+
+<!-- 数据绑定格式转换相关配置 -->
+<!-- 配置支持数字日期格式化操作的转换服务工厂bean，开启类型转换服务 -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<!-- <bean class=""></bean> --><!-- 自定义类型转换器在此配置 -->
+			</list>
+		</property>
+	</bean>
+	<mvc:annotation-driven conversion-service="conversionService"/>
+
+<!-- 拦截器相关配置 -->
+<!-- 	<mvc:interceptors>
+		<bean id="" class=""/>
+	</mvc:interceptors> -->
+
+
+<!-- 不经Handler直接跳转页面的<mvc:view-controller path=""/>标签 -->
+
+<!-- 异常处理解析配置 -->
+<!-- 	<bean id="simpleMappingExceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionAttribute" value="e"></property>异常的默认名为exception
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Exception">error</prop>
+			</props>
+		</property>
+	</bean> -->
+
+
+<!-- 文件上传解析器 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<!-- 指定所上传文件的总大小，单位字节，此属性限制的不是单个上传文件的大小，而是所有上传文件的大小 -->
+		<property name="maxUploadSize" value="10240000"></property>
+	</bean>
+
+<!-- ... -->
+	
+
+
+</beans>

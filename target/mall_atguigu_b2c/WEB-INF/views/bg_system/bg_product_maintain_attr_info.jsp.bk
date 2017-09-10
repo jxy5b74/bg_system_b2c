@@ -1,0 +1,82 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@page isELIgnored="false"  %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<base href="<%=basePath %>">
+<script type="text/javascript" src="jquery/jquery-2.1.1.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript">
+	
+	var index = 0;
+	function dynamic_add_attr_info(index_2){
+		
+		var tbody_content = "";
+		tbody_content +='<tr>';
+		tbody_content +='	<td>属性值名称：<input type="text" name="attrList['+index+'].valueList['+(index_2+1)+'].shxzh_mch"/></td>';
+		tbody_content +='	<td>属性值：<input type="text" name="attrList['+index+'].valueList['+(index_2+1)+'].shxzh"/></td>';
+		tbody_content +='</tr>';
+		$("#attr_info_add_"+index_2).append(tbody_content);
+		
+	}
+	
+	function dynamic_add_attr(){
+		var table_content = "";
+		
+		table_content +='<table id="attr_add_'+(index+1)+'">';
+		table_content +='	<thead>';
+		table_content +='		<tr>';
+		table_content +='			<td>商品属性名：<input type="text" name="attrList['+(index+1)+'].shxm_mch"/></td>';
+		table_content +='			<td><a href="javascript:dynamic_add_attr_info('+(index+1)+');">添加属性值信息</a> </td>';
+		table_content +='		</tr>';
+		table_content +='	</thead>';
+		table_content +='	<tbody id="attr_info_add_'+(index+1)+'">';
+		table_content +='		<tr>';
+		table_content +='			<td>属性值名称：<input type="text" name="attrList['+(index+1)+'].valueList['+index+'].shxzh_mch"/></td>';
+		table_content +='			<td>属性值：<input type="text" name="attrList['+(index+1)+'].valueList['+index+'].shxzh"/></td>';
+		table_content +='		</tr>';
+		table_content +='	</tbody>';
+		table_content +='</table>';
+		$("#attr_add_"+index).after(table_content);
+		index++;
+		
+	}
+	
+</script>
+<title>硅谷商城</title>
+</head>
+<body>
+<h2>添加${flmch2 }的ATTR信息</h2>
+	${success}
+	<a href="javascript:dynamic_add_attr();">新增attr信息</a>
+	<hr>
+	<form action="bg_project_run_batch_insert_attr_info.do" method="post" >
+	<!-- 增加两个隐藏域，后台插入数据库时使用 -->
+		<input type="hidden" name="flbh2" value="${flbh2 }"/>
+		<input type="hidden" name="flmch2" value="${flmch2 }"/>
+		<table id="attr_add_0">
+			<thead>
+				<tr>
+					<td>商品属性名：<input type="text" name="attrList[0].shxm_mch"/></td>
+					<td><a href="javascript:dynamic_add_attr_info(0);">添加属性值信息</a> </td>
+				</tr>
+			</thead>
+			<tbody id="attr_info_add_0">
+				<tr>
+					<td>属性值名称：<input type="text" name="attrList[0].valueList[0].shxzh_mch"/></td>
+					<td>属性值：<input type="text" name="attrList[0].valueList[0].shxzh"/></td>
+				</tr>
+			</tbody>
+		</table>
+	<hr>
+		<input type="submit" value="提交"/>
+	</form>
+
+	
+</body>
+</html>
+
