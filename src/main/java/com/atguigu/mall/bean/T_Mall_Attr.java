@@ -9,6 +9,8 @@ public class T_Mall_Attr {
 	private String shfqy;
 	private int flbh2;
 	private String chjshj;
+//不要在基类上添加属性，
+//若有需要，另行创建一个类，继承基类，并在新创建的类上添加属性
 //	private List<T_Mall_Value> valueList;
 	
 //	public List<T_Mall_Value> getValueList() {
