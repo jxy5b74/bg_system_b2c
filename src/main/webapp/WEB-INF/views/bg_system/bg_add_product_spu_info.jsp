@@ -10,7 +10,7 @@
 <base href="<%=basePath %>">
 <!-- <script type="text/javascript" src="jquery/jquery-2.1.1.min.js"></script> -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>硅谷商城</title>
+<title>乐婴商城</title>
 </head>
 <body>
 <script type="text/javascript">

@@ -65,13 +65,13 @@
 	
 	
 </script>
-<title>硅谷商城</title>
+<title>乐婴商城</title>
 </head>
 <body class="easyui-layout">
 <!-- data-options可以直接在元素上配置easyUI控件相关的一些 控件属性 -->
 <!-- 我们一般配置控件属性的话一般是要调用jquery.easyui.min.js中的控件函数来设置
 	 但是在元素本身上也可以通过data-options这个属性选项来控制-->
-<div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;padding:10px;font-size: 30PX">硅谷商城后台管理系统</div>
+<div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;padding:10px;font-size: 30PX">乐婴商城后台管理系统</div>
 	<input id="bg_switch_tabs" type="hidden" value="${param.call_back_page}"/>
 	<div data-options="region:'west',split:true,title:'导航'" style="width:200px;padding:10px;">
 	<ul class="easyui-tree">
